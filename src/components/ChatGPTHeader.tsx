@@ -7,15 +7,6 @@ export function ChatGPTHeader() {
         <span className="text-foreground font-medium text-lg">ChatGPT</span>
         <ChevronDown className="w-4 h-4 text-muted-foreground" />
       </div>
-      
-      <div className="flex items-center gap-3">
-        <button className="px-4 py-2 text-sm text-foreground border border-border rounded-lg hover:bg-muted transition-colors">
-          Log in
-        </button>
-        <button className="px-4 py-2 text-sm bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors">
-          Sign up for free
-        </button>
-      </div>
     </header>
   );
 }
