@@ -26,7 +26,7 @@ const Index = () => {
       <ChatGPTHeader />
       
       {showAnimation && (
-        <div className="fixed top-20 left-0 right-0 z-40 flex items-center justify-center p-4">
+        <div className="fixed top-80 left-0 right-0 z-40 flex items-center justify-center p-4">
           <div className="text-center bg-background/90 backdrop-blur-sm rounded-lg p-4 border border-border">
             <p className="text-sm text-muted-foreground">
               See how easy it is to use ChatGPT!
