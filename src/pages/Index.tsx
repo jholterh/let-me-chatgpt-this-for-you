@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChatGPTHeader } from "@/components/ChatGPTHeader";
 import { ChatGPTInput } from "@/components/ChatGPTInput";
-import { ActionButtons } from "@/components/ActionButtons";
 import { AnimatedCursor } from "@/components/AnimatedCursor";
 
 const Index = () => {
@@ -27,9 +26,9 @@ const Index = () => {
       <ChatGPTHeader />
       
       {showAnimation && (
-        <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-40 flex items-center justify-center">
-          <div className="text-center mb-8">
-            <p className="text-lg text-muted-foreground animate-pulse">
+        <div className="fixed top-20 left-0 right-0 z-40 flex items-center justify-center p-4">
+          <div className="text-center bg-background/90 backdrop-blur-sm rounded-lg p-4 border border-border">
+            <p className="text-sm text-muted-foreground">
               See how easy it is to use ChatGPT!
             </p>
           </div>
@@ -58,9 +57,6 @@ const Index = () => {
             animationPrompt={animationPrompt}
             disabled={showAnimation}
           />
-          
-          {/* Action Buttons */}
-          <ActionButtons />
           
           {!showAnimation && (
             <div className="text-center">

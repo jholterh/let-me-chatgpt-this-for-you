@@ -125,42 +125,68 @@ export function ChatGPTInput({ onSubmit, disabled = false, showAnimation = false
 
   return (
     <div className="animate-float-in">
-      <form onSubmit={handleSubmit} className="chatgpt-card p-4 max-w-4xl mx-auto">
-        <div className="flex items-center gap-3">
-          <Button type="button" className="chatgpt-button" disabled={disabled}>
-            <Paperclip className="w-5 h-5" />
-          </Button>
-          
-          <Button type="button" className="chatgpt-button" disabled={disabled}>
-            <Globe className="w-5 h-5" />
-          </Button>
-          
-          <div className="flex-1 relative">
-            <input
-              ref={inputRef}
-              type="text"
-              value={prompt}
-              onChange={(e) => !showAnimation && setPrompt(e.target.value)}
-              placeholder="Ask anything"
-              className="chatgpt-input w-full pr-12"
-              disabled={disabled}
-              readOnly={showAnimation}
-            />
-            <Button
-              type="submit"
-              data-submit-btn
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent hover:bg-accent/90 text-accent-foreground p-2 rounded-lg transition-all duration-200"
-              disabled={disabled || !prompt.trim()}
-            >
-              <ArrowUp className="w-4 h-4" />
-            </Button>
+      <div className="max-w-3xl mx-auto">
+        <form onSubmit={handleSubmit} className="relative">
+          <div className="bg-card border border-border rounded-3xl shadow-lg p-4">
+            <div className="flex items-center gap-4">
+              <Button 
+                type="button" 
+                size="sm" 
+                variant="ghost" 
+                className="rounded-lg text-muted-foreground hover:text-foreground"
+                disabled={disabled}
+              >
+                <Paperclip className="w-5 h-5" />
+                <span className="ml-2 text-sm">Attach</span>
+              </Button>
+              
+              <Button 
+                type="button" 
+                size="sm" 
+                variant="ghost" 
+                className="rounded-lg text-muted-foreground hover:text-foreground"
+                disabled={disabled}
+              >
+                <Globe className="w-5 h-5" />
+                <span className="ml-2 text-sm">Search</span>
+              </Button>
+              
+              <div className="flex-1 relative">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={prompt}
+                  onChange={(e) => !showAnimation && setPrompt(e.target.value)}
+                  placeholder="Ask anything"
+                  className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base pr-12 py-2 border-none outline-none"
+                  disabled={disabled}
+                  readOnly={showAnimation}
+                />
+                <Button
+                  type="submit"
+                  data-submit-btn
+                  size="sm"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-muted hover:bg-muted/80 text-foreground p-2 rounded-lg disabled:opacity-50"
+                  disabled={disabled || !prompt.trim()}
+                >
+                  <ArrowUp className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              <Button 
+                type="button" 
+                size="sm" 
+                variant="ghost" 
+                className="rounded-lg text-muted-foreground hover:text-foreground"
+                disabled={disabled}
+              >
+                <Mic className="w-5 h-5" />
+                <span className="ml-2 text-sm">Voice</span>
+              </Button>
+            </div>
           </div>
-          
-          <Button type="button" className="chatgpt-button" disabled={disabled}>
-            <Mic className="w-5 h-5" />
-          </Button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
