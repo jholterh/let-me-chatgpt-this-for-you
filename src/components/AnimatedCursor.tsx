@@ -126,13 +126,13 @@ export function AnimatedCursor({ show, onAnimationComplete }: AnimatedCursorProp
         <div className="w-0.5 h-6 bg-white animate-pulse" />
       ) : cursorType === "pointer" ? (
         <img
-          src="/src/components/images/click_icon.png" // Replace with your `click_icon.png` path
+          src="/public/images/click_icon.png" // Replace with your `click_icon.png` path
           alt="Click Cursor"
           className="w-8 h-8 object-contain"
         />
       ) : (
         <img
-          src="/src/components/images/cursor_icon.png" // Replace with your `cursor_icon.webp` path
+          src="/public/images/cursor_icon.png" // Replace with your `cursor_icon.webp` path
           alt="Cursor Icon"
           className="w-8 h-8 object-contain"
         />
