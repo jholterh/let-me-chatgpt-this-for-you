@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import clickIcon from "/assets/click_icon.png";
-import cursorIcon from "/assets/cursor_icon.png";
+
 
 interface AnimatedCursorProps {
   show: boolean;
@@ -128,13 +127,13 @@ export function AnimatedCursor({ show, onAnimationComplete }: AnimatedCursorProp
         <div className="w-0.5 h-6 bg-white animate-pulse" />
       ) : cursorType === "pointer" ? (
         <img
-          src={clickIcon} // Replace with your `click_icon.png` path
+          src="/assets/click_icon.png"
           alt="Click Cursor"
           className="w-8 h-8 object-contain"
         />
       ) : (
         <img
-          src={cursorIcon} // Replace with your `cursor_icon.webp` path
+          src="/assets/cursor_icon.png"
           alt="Cursor Icon"
           className="w-8 h-8 object-contain"
         />
