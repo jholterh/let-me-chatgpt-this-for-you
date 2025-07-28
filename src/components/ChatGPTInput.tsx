@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Paperclip, Globe, Mic, ArrowUp, Copy, Check } from "lucide-react";
+import { ArrowUp, Paperclip, Globe, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 
 interface ChatGPTInputProps {
   onSubmit?: (prompt: string) => void;
@@ -12,38 +11,13 @@ interface ChatGPTInputProps {
 
 export function ChatGPTInput({ onSubmit, disabled = false, showAnimation = false, animationPrompt = "" }: ChatGPTInputProps) {
   const [prompt, setPrompt] = useState("");
-  const [generatedLink, setGeneratedLink] = useState("");
-  const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
     
-    // Generate shareable link
-    const shareableLink = `${window.location.origin}/?q=${encodeURIComponent(prompt.trim())}`;
-    setGeneratedLink(shareableLink);
-    
     onSubmit?.(prompt);
-  };
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(generatedLink);
-      setCopied(true);
-      toast({
-        title: "Link copied!",
-        description: "Share this link to show someone how to use ChatGPT.",
-      });
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      toast({
-        title: "Failed to copy",
-        description: "Please copy the link manually.",
-        variant: "destructive",
-      });
-    }
   };
 
   // Animation effect for teaching mode
@@ -83,108 +57,69 @@ export function ChatGPTInput({ onSubmit, disabled = false, showAnimation = false
     }
   }, [showAnimation, animationPrompt]);
 
-  if (generatedLink) {
-    return (
-      <div className="animate-float-in">
-        <div className="chatgpt-card p-6 max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold mb-4 text-center">Your Link is Ready!</h3>
-          <div className="bg-secondary/50 rounded-lg p-4 mb-4">
-            <p className="text-sm text-muted-foreground mb-2">Share this link:</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={generatedLink}
-                readOnly
-                className="flex-1 bg-transparent text-sm text-foreground select-all"
-              />
-              <Button
-                onClick={handleCopyLink}
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Copied!" : "Copy"}
-              </Button>
-            </div>
-          </div>
-          <div className="text-center">
-            <Button
-              onClick={() => {
-                setGeneratedLink("");
-                setPrompt("");
-              }}
-              variant="outline"
-            >
-              Create Another Link
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="animate-float-in">
-      <div className="max-w-3xl mx-auto">
-        <form onSubmit={handleSubmit} className="relative">
-          <div className="bg-card border border-border rounded-3xl shadow-lg p-4">
-            <div className="flex items-center gap-4">
-              <Button 
-                type="button" 
-                size="sm" 
-                variant="ghost" 
-                className="rounded-lg text-muted-foreground hover:text-foreground"
-                disabled={disabled}
-              >
-                <Paperclip className="w-5 h-5" />
-                <span className="ml-2 text-sm">Attach</span>
-              </Button>
-              
-              <Button 
-                type="button" 
-                size="sm" 
-                variant="ghost" 
-                className="rounded-lg text-muted-foreground hover:text-foreground"
-                disabled={disabled}
-              >
-                <Globe className="w-5 h-5" />
-                <span className="ml-2 text-sm">Search</span>
-              </Button>
-              
-              <div className="flex-1 relative">
+      <div className="max-w-3xl w-full mx-auto flex justify-center">
+        <form onSubmit={handleSubmit} className="relative w-full">
+          <div className="bg-card border border-border rounded-3xl shadow-lg py-2 px-4 w-full">
+          <div className="flex flex-col gap-4 w-full">
+            {/* Input Field */}
+            <div className="flex flex-col gap-2 w-full">
+  
+              <div className="flex items-center w-full rounded-3xl px-4 py-2 bg-transparent">
                 <input
                   ref={inputRef}
                   type="text"
                   value={prompt}
                   onChange={(e) => !showAnimation && setPrompt(e.target.value)}
                   placeholder="Ask anything"
-                  className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base pr-12 py-2 border-none outline-none"
+                  className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base outline-none"
                   disabled={disabled}
                   readOnly={showAnimation}
                 />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    className="rounded-3xl text-white font-normal border border-[#4c4c4c] hover:bg-white/10 disabled:text-white disabled:opacity-100"
+                    disabled={true}
+                  >
+                    <Paperclip className="w-5 h-5 text-white" />
+                    <span className="text-sm text-white">Attach</span>
+                  </Button>
+
+                  <Button 
+                    type="button" 
+                    size="sm" 
+                    variant="ghost" 
+                    className="rounded-3xl text-white font-normal border border-[#4c4c4c] hover:bg-white/10 disabled:text-white disabled:opacity-100"
+                    disabled={disabled}
+                  >
+                    <Globe className="w-5 h-5 text-white" />
+                    <span className="text-sm text-white">Search</span>
+                  </Button>
+                </div>
+
                 <Button
                   type="submit"
                   data-submit-btn
                   size="sm"
-                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-muted hover:bg-muted/80 text-foreground p-2 rounded-lg disabled:opacity-50"
+                  className="bg-white text-black w-10 h-10 rounded-full border border-[#4c4c4c] hover:bg-white/10 disabled:text-black disabled:opacity-100 disabled:pointer-events-none flex items-center justify-center"
                   disabled={disabled || !prompt.trim()}
                 >
-                  <ArrowUp className="w-4 h-4" />
+                  <ArrowUp className="w-4 h-4" strokeWidth={3} />
                 </Button>
               </div>
-              
-              <Button 
-                type="button" 
-                size="sm" 
-                variant="ghost" 
-                className="rounded-lg text-muted-foreground hover:text-foreground"
-                disabled={disabled}
-              >
-                <Mic className="w-5 h-5" />
-                <span className="ml-2 text-sm">Voice</span>
-              </Button>
             </div>
-          </div>
+            </div>
+            </div>
+
+
         </form>
       </div>
     </div>
