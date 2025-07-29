@@ -3,15 +3,26 @@ import { SimpleInput } from "@/components/SimpleInput";
 
 export function StartScreen() {
   const [generatedLink, setGeneratedLink] = useState("");
+  const [copied, setCopied] = useState(false); // <-- New state
 
   const handleSubmit = (prompt: string) => {
-    // Generate shareable link
     const shareableLink = `${window.location.origin}/?q=${encodeURIComponent(prompt.trim())}`;
     setGeneratedLink(shareableLink);
   };
 
   const handleCreateAnother = () => {
     setGeneratedLink("");
+    setCopied(false); // Reset on new link
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(generatedLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2s
+    } catch (err) {
+      // Handle error (optional: show error feedback)
+    }
   };
 
   if (generatedLink) {
@@ -32,17 +43,10 @@ export function StartScreen() {
                       className="flex-1 bg-transparent text-sm text-foreground select-all"
                     />
                     <button
-                      onClick={async () => {
-                        try {
-                          await navigator.clipboard.writeText(generatedLink);
-                          // You could add toast notification here
-                        } catch (err) {
-                          // Handle error
-                        }
-                      }}
+                      onClick={handleCopy}
                       className="px-3 py-1 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/90"
                     >
-                      Copy
+                      {copied ? "Copied!" : "Copy"}
                     </button>
                   </div>
                 </div>
@@ -88,4 +92,4 @@ export function StartScreen() {
       </main>
     </div>
   );
-} 
+}
