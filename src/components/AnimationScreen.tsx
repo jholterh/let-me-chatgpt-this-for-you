@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatGPTInput } from "@/components/ChatGPTInput";
 import { AnimatedCursor } from "@/components/AnimatedCursor";
 
@@ -9,12 +9,14 @@ interface AnimationScreenProps {
 export function AnimationScreen({ prompt }: AnimationScreenProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Animation effect for teaching mode
+  // NEW: Track typing completion
+  const [typingComplete, setTypingComplete] = useState(false);
+
   useEffect(() => {
     if (prompt && inputRef.current) {
       const input = inputRef.current;
       let currentIndex = 0;
-      
+
       // Focus the input after a delay
       setTimeout(() => {
         input.focus();
@@ -25,10 +27,14 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
       setTimeout(() => {
         const typeInterval = setInterval(() => {
           if (currentIndex < prompt.length) {
-            // We'll handle the typing in ChatGPTInput component
+            // (You might want to update the input value here if needed)
             currentIndex++;
           } else {
             clearInterval(typeInterval);
+
+            // NEW: Signal typing is complete!
+            setTypingComplete(true);
+
             // Click submit button after typing is complete
             setTimeout(() => {
               const submitBtn = document.querySelector('[data-submit-btn]') as HTMLButtonElement;
@@ -56,7 +62,6 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </div>
-        
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors">
             Log in
@@ -70,8 +75,10 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
         </div>
       </header>
       
+      {/* Updated: Pass typingComplete to AnimatedCursor */}
       <AnimatedCursor 
         show={true} 
+        typingComplete={typingComplete} // <-- Pass the state here!
         onAnimationComplete={() => {
           // Animation completed, continue with typing
         }}
@@ -92,6 +99,7 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
                 showAnimation={true}
                 animationPrompt={prompt}
                 disabled={true}
+                inputRef={inputRef} // <-- Pass ref if you want to control the input
               />
             </div>
           </div>
@@ -110,4 +118,4 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
       </main>
     </div>
   );
-} 
+}
