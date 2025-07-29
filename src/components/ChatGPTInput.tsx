@@ -1,26 +1,26 @@
-import { useState, useRef, useEffect } from "react";
-import { ArrowUp, Paperclip, Globe, Mic } from "lucide-react";
+import { useRef, useEffect } from "react";
+import { ArrowUp, Paperclip, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ChatGPTInputProps {
+  prompt: string;
+  setPrompt: (value: string) => void;
   onSubmit?: (prompt: string) => void;
   disabled?: boolean;
   showAnimation?: boolean;
-  animationPrompt?: string;
-  inputRef?: React.RefObject<HTMLInputElement>; // <-- ADDED
+  inputRef?: React.RefObject<HTMLTextAreaElement>;
 }
 
 export function ChatGPTInput({
+  prompt,
+  setPrompt,
   onSubmit,
   disabled = false,
   showAnimation = false,
-  animationPrompt = "",
-  inputRef, // <-- ADDED
+  inputRef,
 }: ChatGPTInputProps) {
-  const [prompt, setPrompt] = useState("");
-  const internalRef = useRef<HTMLInputElement>(null); // <-- Internal fallback ref
-
-  const resolvedRef = inputRef || internalRef; // Use prop ref if provided
+  const internalRef = useRef<HTMLTextAreaElement>(null);
+  const resolvedRef = inputRef || internalRef;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,42 +28,22 @@ export function ChatGPTInput({
     onSubmit?.(prompt);
   };
 
-  // Animation effect for teaching mode
-  useEffect(() => {
-    if (showAnimation && animationPrompt && resolvedRef.current) {
-      const input = resolvedRef.current;
-      let currentIndex = 0;
-      
-      // Focus the input after a delay
-      setTimeout(() => {
-        input.focus();
-        input.click();
-      }, 1000);
-
-      // Type the prompt character by character
-      setTimeout(() => {
-        const typeInterval = setInterval(() => {
-          if (currentIndex < animationPrompt.length) {
-            setPrompt(animationPrompt.slice(0, currentIndex + 1));
-            currentIndex++;
-          } else {
-            clearInterval(typeInterval);
-            // Click submit button after typing is complete
-            setTimeout(() => {
-              const submitBtn = document.querySelector('[data-submit-btn]') as HTMLButtonElement;
-              if (submitBtn) {
-                submitBtn.click();
-                // Redirect after brief pause
-                setTimeout(() => {
-                  window.location.href = `https://chat.openai.com/?q=${encodeURIComponent(animationPrompt)}`;
-                }, 1500);
-              }
-            }, 500);
-          }
-        }, 100);
-      }, 1500);
+  // --- Auto-resize logic ---
+  function resizeTextarea(textarea: HTMLTextAreaElement | null) {
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
     }
-  }, [showAnimation, animationPrompt, resolvedRef]);
+  }
+
+  useEffect(() => {
+    resizeTextarea(resolvedRef.current);
+  }, [prompt]);
+
+  useEffect(() => {
+    // Also resize on mount in case of pre-filled
+    resizeTextarea(resolvedRef.current);
+  }, []);
 
   return (
     <div className="animate-float-in">
@@ -71,22 +51,27 @@ export function ChatGPTInput({
         <form onSubmit={handleSubmit} className="relative w-full">
           <div className="bg-card border border-border rounded-3xl shadow-lg py-2 px-4 w-full">
             <div className="flex flex-col gap-4 w-full">
-              {/* Input Field */}
               <div className="flex flex-col gap-2 w-full">
                 <div className="flex items-center w-full rounded-3xl px-4 py-2 bg-transparent">
-                  <input
+                  <textarea
                     ref={resolvedRef}
-                    type="text"
                     value={prompt}
                     onChange={(e) => !showAnimation && setPrompt(e.target.value)}
                     placeholder="Ask anything"
-                    className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base outline-none"
+                    className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base outline-none resize-none"
                     disabled={disabled}
                     readOnly={showAnimation}
+                    rows={1}
+                    style={{
+                      minHeight: "1rem",
+                      maxHeight: "8rem",
+                      overflowY: "auto",
+                      lineHeight: "1.5",
+                      transition: "height 0.1s",
+                    }}
                   />
                 </div>
-
-                {/* Buttons */}
+                {/* ...buttons as before... */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Button
@@ -99,11 +84,10 @@ export function ChatGPTInput({
                       <Paperclip className="w-5 h-5 text-white" />
                       <span className="text-sm text-white">Attach</span>
                     </Button>
-
-                    <Button 
-                      type="button" 
-                      size="sm" 
-                      variant="ghost" 
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
                       className="rounded-3xl text-white font-normal border border-[#4c4c4c] hover:bg-white/10 disabled:text-white disabled:opacity-100"
                       disabled={disabled}
                     >
@@ -111,7 +95,6 @@ export function ChatGPTInput({
                       <span className="text-sm text-white">Search</span>
                     </Button>
                   </div>
-
                   <Button
                     type="submit"
                     data-submit-btn

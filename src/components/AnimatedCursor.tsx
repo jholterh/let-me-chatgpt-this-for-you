@@ -27,7 +27,8 @@ export function AnimatedCursor({
   useEffect(() => {
     if (!show) return;
 
-    const input = document.querySelector('input[placeholder="Ask anything"]') as HTMLInputElement;
+    const input = document.querySelector('textarea[placeholder="Ask anything"]') as HTMLTextAreaElement;
+
     const submitBtn = document.querySelector('[data-submit-btn]') as HTMLButtonElement;
 
     if (!input || !submitBtn) return;

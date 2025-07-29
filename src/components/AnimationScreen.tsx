@@ -6,43 +6,37 @@ interface AnimationScreenProps {
   prompt: string;
 }
 
-export function AnimationScreen({ prompt }: AnimationScreenProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // NEW: Track typing completion
+export function AnimationScreen({ prompt: initialPrompt }: AnimationScreenProps) {
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [prompt, setPrompt] = useState("");
   const [typingComplete, setTypingComplete] = useState(false);
 
   useEffect(() => {
-    if (prompt && inputRef.current) {
-      const input = inputRef.current;
+    if (initialPrompt && inputRef.current) {
       let currentIndex = 0;
 
-      // Focus the input after a delay
+      setPrompt(""); // Clear before animation
+      setTypingComplete(false);
+
       setTimeout(() => {
-        input.focus();
-        input.click();
+        inputRef.current?.focus();
+        inputRef.current?.click();
       }, 1000);
 
-      // Type the prompt character by character
       setTimeout(() => {
         const typeInterval = setInterval(() => {
-          if (currentIndex < prompt.length) {
-            // (You might want to update the input value here if needed)
+          if (currentIndex < initialPrompt.length) {
+            setPrompt(initialPrompt.slice(0, currentIndex + 1));
             currentIndex++;
           } else {
             clearInterval(typeInterval);
-
-            // NEW: Signal typing is complete!
             setTypingComplete(true);
-
-            // Click submit button after typing is complete
             setTimeout(() => {
               const submitBtn = document.querySelector('[data-submit-btn]') as HTMLButtonElement;
               if (submitBtn) {
                 submitBtn.click();
-                // Redirect after brief pause
                 setTimeout(() => {
-                  window.location.href = `https://chat.openai.com/?q=${encodeURIComponent(prompt)}`;
+                  window.location.href = `https://chat.openai.com/?q=${encodeURIComponent(initialPrompt)}`;
                 }, 1500);
               }
             }, 500);
@@ -50,7 +44,7 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
         }, 100);
       }, 1500);
     }
-  }, [prompt]);
+  }, [initialPrompt]);
 
   return (
     <div className="min-h-screen bg-background demo-screen">
@@ -75,15 +69,11 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
         </div>
       </header>
       
-      {/* Updated: Pass typingComplete to AnimatedCursor */}
       <AnimatedCursor 
         show={true} 
-        typingComplete={typingComplete} // <-- Pass the state here!
-        onAnimationComplete={() => {
-          // Animation completed, continue with typing
-        }}
+        typingComplete={typingComplete}
+        onAnimationComplete={() => {}}
       />
-      
       <main className="pt-20 px-6 flex flex-col min-h-screen">
         <div className="flex-1 flex flex-col justify-center -mt-20">
           {/* Main ChatGPT Title */}
@@ -96,15 +86,16 @@ export function AnimationScreen({ prompt }: AnimationScreenProps) {
           <div className="w-full flex justify-center">
             <div className="w-full max-w-5xl">
               <ChatGPTInput 
+                prompt={prompt}
+                setPrompt={setPrompt}
                 showAnimation={true}
-                animationPrompt={prompt}
                 disabled={true}
-                inputRef={inputRef} // <-- Pass ref if you want to control the input
+                inputRef={inputRef}
               />
             </div>
           </div>
         </div>
-        {/* Footer - positioned at bottom */}
+        {/* Footer */}
         <div className="text-center pb-8">
           <p className="text-xs text-muted-foreground">
             By messaging ChatGPT, you agree to our{" "}
