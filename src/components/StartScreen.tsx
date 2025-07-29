@@ -3,7 +3,7 @@ import { SimpleInput } from "@/components/SimpleInput";
 
 export function StartScreen() {
   const [generatedLink, setGeneratedLink] = useState("");
-  const [copied, setCopied] = useState(false); // <-- New state
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = (prompt: string) => {
     const shareableLink = `${window.location.origin}/?q=${encodeURIComponent(prompt.trim())}`;
@@ -12,16 +12,16 @@ export function StartScreen() {
 
   const handleCreateAnother = () => {
     setGeneratedLink("");
-    setCopied(false); // Reset on new link
+    setCopied(false);
   };
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(generatedLink);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Reset after 2s
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      // Handle error (optional: show error feedback)
+      // Optionally show error feedback
     }
   };
 
@@ -40,7 +40,9 @@ export function StartScreen() {
                       type="text"
                       value={generatedLink}
                       readOnly
-                      className="flex-1 bg-transparent text-sm text-foreground select-all"
+                      className="flex-1 bg-transparent text-sm text-foreground select-all cursor-pointer"
+                      onClick={handleCopy}
+                      title="Click to copy"
                     />
                     <button
                       onClick={handleCopy}
@@ -49,6 +51,11 @@ export function StartScreen() {
                       {copied ? "Copied!" : "Copy"}
                     </button>
                   </div>
+                  {copied && (
+                    <div className="text-xs text-green-600 mt-2 transition-opacity">
+                      Link copied to clipboard!
+                    </div>
+                  )}
                 </div>
                 <div className="text-center">
                   <button
