@@ -80,7 +80,7 @@ export function StartScreen() {
           {/* Main ChatGPT Title */}
           <div className="text-center">
             <h1 className="text-5xl font-light text-foreground mb-8 animate-float-in">
-              Let me ChatGPT that for you
+              Let me ChatGPT this for you
             </h1>
           </div>
           
