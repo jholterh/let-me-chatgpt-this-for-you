@@ -191,13 +191,13 @@ export function AnimatedCursor({
         <img
           src="/assets/click_icon.png"
           alt="Click Cursor"
-          className="w-8 h-8 object-contain"
+          className="w-10 h-10 object-contain"
         />
       ) : (
         <img
           src="/assets/cursor_icon.png"
           alt="Cursor Icon"
-          className="w-8 h-8 object-contain"
+          className="w-16 h-16 object-contain"
         />
       )}
     </div>
