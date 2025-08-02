@@ -186,7 +186,7 @@ export function AnimatedCursor({
       }}
     >
       {cursorType === "text" ? (
-        <div className="w-0.5 h-6 bg-white animate-pulse" />
+        <div className="w-0.5 h-6 bg-foreground animate-pulse" />
       ) : cursorType === "pointer" ? (
         <img
           src="/assets/click_icon.png"

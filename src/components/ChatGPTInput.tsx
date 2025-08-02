@@ -71,35 +71,34 @@ export function ChatGPTInput({
                     }}
                   />
                 </div>
-                {/* ...buttons as before... */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Button
                       type="button"
                       size="sm"
                       variant="ghost"
-                      className="rounded-3xl text-white font-normal border border-[#4c4c4c] hover:bg-white/10 disabled:text-white disabled:opacity-100"
+                      className="rounded-3xl text-foreground font-normal border border-border hover:bg-muted transition-colors disabled:text-foreground disabled:opacity-100"
                       disabled={true}
                     >
-                      <Paperclip className="w-5 h-5 text-white" />
-                      <span className="text-sm text-white">Attach</span>
+                      <Paperclip className="w-5 h-5 text-foreground" />
+                      <span className="text-sm text-foreground">Attach</span>
                     </Button>
                     <Button
                       type="button"
                       size="sm"
                       variant="ghost"
-                      className="rounded-3xl text-white font-normal border border-[#4c4c4c] hover:bg-white/10 disabled:text-white disabled:opacity-100"
+                      className="rounded-3xl text-foreground font-normal border border-border hover:bg-muted transition-colors disabled:text-foreground disabled:opacity-100"
                       disabled={disabled}
                     >
-                      <Globe className="w-5 h-5 text-white" />
-                      <span className="text-sm text-white">Search</span>
+                      <Globe className="w-5 h-5 text-foreground" />
+                      <span className="text-sm text-foreground">Search</span>
                     </Button>
                   </div>
                   <Button
                     type="submit"
                     data-submit-btn
                     size="sm"
-                    className="bg-white text-black w-10 h-10 rounded-full border border-[#4c4c4c] hover:bg-white/10 disabled:text-black disabled:opacity-100 disabled:pointer-events-none flex items-center justify-center"
+                    className="bg-primary text-primary-foreground w-10 h-10 rounded-full border border-border hover:bg-accent transition-colors disabled:text-primary-foreground disabled:opacity-100 disabled:pointer-events-none flex items-center justify-center"
                     disabled={disabled || !prompt.trim()}
                   >
                     <ArrowUp className="w-4 h-4" strokeWidth={3} />
@@ -112,4 +111,4 @@ export function ChatGPTInput({
       </div>
     </div>
   );
-}
+}  

@@ -11,10 +11,10 @@ export function AnimationScreen({ prompt: initialPrompt }: AnimationScreenProps)
   const [prompt, setPrompt] = useState("");
   const [typingComplete, setTypingComplete] = useState(false);
 
+  // Animation effect (unchanged)
   useEffect(() => {
     if (initialPrompt && inputRef.current) {
       let currentIndex = 0;
-
       setPrompt(""); // Clear before animation
       setTypingComplete(false);
 
@@ -57,7 +57,7 @@ export function AnimationScreen({ prompt: initialPrompt }: AnimationScreenProps)
           </svg>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors">
+          <button className="px-4 py-2 bg-card text-card-foreground rounded-lg hover:bg-muted transition-colors">
             Log in
           </button>
           <button className="px-4 py-2 border border-border text-foreground hover:bg-muted rounded-lg transition-colors">
@@ -68,12 +68,13 @@ export function AnimationScreen({ prompt: initialPrompt }: AnimationScreenProps)
           </button>
         </div>
       </header>
-      
-      <AnimatedCursor 
-        show={true} 
+
+      <AnimatedCursor
+        show={true}
         typingComplete={typingComplete}
         onAnimationComplete={() => {}}
       />
+
       <main className="pt-20 px-6 flex flex-col min-h-screen">
         <div className="flex-1 flex flex-col justify-center -mt-20">
           {/* Main ChatGPT Title */}
@@ -85,7 +86,7 @@ export function AnimationScreen({ prompt: initialPrompt }: AnimationScreenProps)
           {/* Main Input - much wider */}
           <div className="w-full flex justify-center">
             <div className="w-full max-w-5xl">
-              <ChatGPTInput 
+              <ChatGPTInput
                 prompt={prompt}
                 setPrompt={setPrompt}
                 showAnimation={true}
