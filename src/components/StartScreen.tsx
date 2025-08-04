@@ -83,18 +83,36 @@ export function StartScreen() {
               Let me ChatGPT this for you
             </h1>
           </div>
-          
           {/* Main Input */}
-          <SimpleInput 
+          <SimpleInput
             disabled={false}
             onSubmit={handleSubmit}
           />
-          
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
               Create a shareable link to teach someone how to use ChatGPT
             </p>
           </div>
+          {/* --- VIDEO SECTION STARTS HERE --- */}
+          <div className="flex justify-center mt-8">
+          <video
+            width="560"
+            height="315"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="rounded-lg shadow-lg"
+          >
+            <source src="/assets/example_vid.mov" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+
+          </div>
+
+
+            {/* --- VIDEO SECTION ENDS HERE --- */}
+
         </div>
       </main>
     </div>
