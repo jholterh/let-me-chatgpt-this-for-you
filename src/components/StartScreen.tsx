@@ -104,7 +104,7 @@ export function StartScreen() {
             playsInline
             className="rounded-lg shadow-lg"
           >
-            <source src="/assets/example_vid.mov" type="video/mp4" />
+            <source src="/assets/example_vid.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
 
