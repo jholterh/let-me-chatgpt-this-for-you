@@ -1,6 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SimpleInput } from "@/components/SimpleInput";
 import PromoSection from "@/components/Langdock"; // adjust the import path as needed
+
+function ThemedVideo() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const match = window.matchMedia("(prefers-color-scheme: dark)");
+    setIsDark(match.matches);
+    const handler = (e) => setIsDark(e.matches);
+    match.addEventListener("change", handler);
+    return () => match.removeEventListener("change", handler);
+  }, []);
+
+  return (
+    <video
+      width="560"
+      height="315"
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="rounded-lg shadow-lg"
+      key={isDark ? "dark" : "light"} // forces re-render when theme changes
+    >
+      <source
+        src={isDark ? "/assets/example_vid_bright.mp4" : "/assets/example_vid_dark.mp4"}
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+  );
+}
 
 export function StartScreen() {
   const [generatedLink, setGeneratedLink] = useState("");
@@ -90,19 +121,7 @@ export function StartScreen() {
             </p>
           </div>
           <div className="flex flex-col items-center mt-8">
-            <video
-              width="560"
-              height="315"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="rounded-lg shadow-lg"
-            >
-              <source src="/assets/example_vid.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {/* LangdockCard and SocialProof appear here */}
+            <ThemedVideo />
             <PromoSection />
           </div>
         </div>
