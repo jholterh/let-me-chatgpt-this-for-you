@@ -68,6 +68,7 @@ export function StartScreen() {
                   </button>
                 </div>
               </div>
+              <PromoSection />
             </div>
           </div>
         </main>
