@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SimpleInput } from "@/components/SimpleInput";
+import PromoSection from "@/components/Langdock"; // adjust the import path as needed
 
 export function StartScreen() {
   const [generatedLink, setGeneratedLink] = useState("");
@@ -77,42 +78,33 @@ export function StartScreen() {
     <div className="min-h-screen bg-background">
       <main className="pt-20 pb-8 px-6">
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* Main ChatGPT Title */}
           <div className="text-center">
             <h1 className="text-5xl font-light text-foreground mb-8 animate-float-in">
               Let me ChatGPT this for you
             </h1>
           </div>
-          {/* Main Input */}
-          <SimpleInput
-            disabled={false}
-            onSubmit={handleSubmit}
-          />
+          <SimpleInput disabled={false} onSubmit={handleSubmit} />
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
               Create a shareable link to teach someone how to use ChatGPT
             </p>
           </div>
-          {/* --- VIDEO SECTION STARTS HERE --- */}
-          <div className="flex justify-center mt-8">
-          <video
-            width="560"
-            height="315"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="rounded-lg shadow-lg"
-          >
-            <source src="/assets/example_vid.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-
+          <div className="flex flex-col items-center mt-8">
+            <video
+              width="560"
+              height="315"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="rounded-lg shadow-lg"
+            >
+              <source src="/assets/example_vid.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {/* LangdockCard and SocialProof appear here */}
+            <PromoSection />
           </div>
-
-
-            {/* --- VIDEO SECTION ENDS HERE --- */}
-
         </div>
       </main>
     </div>
