@@ -19,11 +19,30 @@ export function SimpleInput({ onSubmit, disabled = false }: SimpleInputProps) {
     }
   }, [prompt]);
 
+  // Auto-focus on mount
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
     onSubmit?.(prompt);
     setPrompt(""); // Optional: clear after submit
+  };
+
+  // Handle Enter and Shift+Enter
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (prompt.trim()) {
+        onSubmit?.(prompt);
+        setPrompt(""); // Optional: clear after submit
+      }
+    }
+    // Shift+Enter will naturally insert a new line, so no need to handle it
   };
 
   return (
@@ -37,6 +56,7 @@ export function SimpleInput({ onSubmit, disabled = false }: SimpleInputProps) {
                   ref={inputRef}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   placeholder="Ask anything"
                   className="w-full bg-transparent text-foreground placeholder:text-muted-foreground text-base pr-12 py-2 border-none outline-none resize-none"
                   disabled={disabled}
@@ -59,7 +79,6 @@ export function SimpleInput({ onSubmit, disabled = false }: SimpleInputProps) {
                 >
                   <ArrowUp className="w-4 h-4 text-primary-foreground" />
                 </Button>
-
               </div>
             </div>
           </div>
