@@ -1,4 +1,4 @@
-# Prompt-to-Chat-Magic
+# Let-Me-ChatGPT-This-For-You
 
 **Website:** [https://letmechatgptthisforyou.com](https://letmechatgptthisforyou.com)
 
